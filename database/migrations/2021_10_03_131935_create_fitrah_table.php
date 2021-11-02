@@ -13,7 +13,7 @@ class CreateFitrahTable extends Migration
      */
     public function up()
     {
-      Schema::create('fitrah', function (Blueprint $table) {
+      Schema::connection('zakat')->create('fitrah', function (Blueprint $table) {
         $table->id()->unsigned();
         $table->string('nama', 100);
         $table->string('jenis', 5);
@@ -31,6 +31,6 @@ class CreateFitrahTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('fitrah');
+        Schema::connection('zakat')->dropIfExists('fitrah');
     }
 }

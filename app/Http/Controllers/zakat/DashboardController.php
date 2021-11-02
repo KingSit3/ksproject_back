@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\zakat;
 
-use Carbon\Carbon;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
@@ -10,12 +10,12 @@ class DashboardController extends Controller
     public function index()
     {
         $currentYear = date('Y');
-        $dbFitrah = DB::table('fitrah')->where('deleted_at',  '=', null)->whereYear('updated_at', '=', $currentYear);
+        $dbFitrah = DB::connection('zakat')->table('fitrah')->where('deleted_at',  '=', null)->whereYear('updated_at', '=', $currentYear);
         
         $data = [
             'infaq' => [
                 'year' => $currentYear,
-                'totalInfaq' => DB::table('infaq')
+                'totalInfaq' => DB::connection('zakat')->table('infaq')
                                     ->where('deleted_at',  '=', null)
                                     ->whereYear('updated_at', '=', $currentYear)
                                     ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTHNAME(updated_at) as month') )

@@ -14,7 +14,7 @@ class FitrahSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('fitrah')->insert([
+      DB::connection('zakat')->table('fitrah')->insert([
         [
           'nama' => 'jaka',
           'jenis' => 'beras',

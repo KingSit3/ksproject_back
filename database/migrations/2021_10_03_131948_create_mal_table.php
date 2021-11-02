@@ -13,7 +13,7 @@ class CreateMalTable extends Migration
      */
     public function up()
     {
-      Schema::create('mal', function (Blueprint $table) {
+      Schema::connection('zakat')->create('mal', function (Blueprint $table) {
         $table->id()->unsigned();
         $table->string('nama', 100);
         $table->string('jenis', 50);
@@ -32,6 +32,6 @@ class CreateMalTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mal');
+        Schema::connection('zakat')->dropIfExists('mal');
     }
 }

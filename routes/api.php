@@ -1,11 +1,13 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\InfaqController;
-use App\Http\Controllers\FitrahController;
 use App\Http\Controllers\LoginController;
-use App\Http\Controllers\MalController;
+
+// Zakat Route
+use App\Http\Controllers\zakat\AdminController;
+use App\Http\Controllers\zakat\DashboardController;
+use App\Http\Controllers\zakat\InfaqController;
+use App\Http\Controllers\zakat\FitrahController;
+use App\Http\Controllers\zakat\MalController;
 use Illuminate\Support\Facades\Route;
 
 /*

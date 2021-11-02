@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\zakat;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,7 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
-        $mal = DB::table('mal')
+        $mal = DB::connection('zakat')->table('mal')
                       ->where(['jenis' => $jenis, 'deleted_at' => null])
                       ->paginate(10);
   
@@ -38,7 +39,7 @@ class MalController extends Controller
   
         try {
   
-          DB::table('mal')->insert([
+          DB::connection('zakat')->table('mal')->insert([
             'nama' => $req['nama'],
             'jenis' => $req['jenis'],
             'data' => json_encode($req['data']),
@@ -59,7 +60,7 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
-        $mal = DB::table('mal')->where([
+        $mal = DB::connection('zakat')->table('mal')->where([
                                         'jenis' => $jenis, 
                                         'deleted_at' => null,
                                       ])
@@ -76,7 +77,7 @@ class MalController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
         try {
-          DB::table('mal')->where('id', $id)->update([
+          DB::connection('zakat')->table('mal')->where('id', $id)->update([
             'deleted_at' => now()
           ]);
           return response('Data berhasil terhapus', 200);
@@ -92,7 +93,7 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $deletedMal = DB::table('mal')->where('deleted_at', '!=', null)->paginate(10);
+        $deletedMal = DB::connection('zakat')->table('mal')->where('deleted_at', '!=', null)->paginate(10);
   
         return response($deletedMal, 200);
       }
@@ -103,7 +104,7 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $mal = DB::table('mal')
+        $mal = DB::connection('zakat')->table('mal')
                       ->where('deleted_at', '!=', null)
                       ->where('nama', 'like', '%'.$keyword.'%')
                       ->paginate(10);
@@ -117,7 +118,7 @@ class MalController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
         try {
-          DB::table('mal')->where('id', '=', $id)->update([
+          DB::connection('zakat')->table('mal')->where('id', '=', $id)->update([
             'deleted_at' => null
           ]);
   

@@ -13,12 +13,12 @@ class CreateMustahikTable extends Migration
      */
     public function up()
     {
-      Schema::create('mustahik', function (Blueprint $table) {
+      Schema::connection('zakat')->create('mustahik', function (Blueprint $table) {
         $table->id()->unsigned();
         $table->string('nama_keluarga', 100);
-        $table->integer('rt')->unsigned();
-        $table->integer('rw')->unsigned();
+        $table->string('alamat');
         $table->string('jumlah_anggota_keluarga');
+        $table->string('jumlah_yang_diterima');
         $table->softDeletes();
         $table->timestamp('created_at')->useCurrent()->nullable();
         $table->timestamp('updated_at')->nullable();
@@ -32,6 +32,6 @@ class CreateMustahikTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('mustahik');
+        Schema::connection('zakat')->dropIfExists('mustahik');
     }
 }

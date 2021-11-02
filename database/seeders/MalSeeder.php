@@ -14,7 +14,7 @@ class MalSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('mal')->insert([
+      DB::connection('zakat')->table('mal')->insert([
         [
           'nama' => 'Z23',
           'jenis' => 'penghasilan',

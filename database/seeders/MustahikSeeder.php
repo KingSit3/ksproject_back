@@ -14,28 +14,28 @@ class MustahikSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('mustahik')->insert([
+      DB::connection('zakat')->table('mustahik')->insert([
         [
-          'nama' => 'mona',
-          'rt' => 1,
-          'rw' => 10,
-          'jumlah' => 4,
+          'nama_keluarga' => 'mona',
+          'alamat' => 'jalan kanan kiri Rt01/04 kel. kaka kec. lala no.60',
+          'jumlah_anggota_keluarga' => 4,
+          'jumlah_yang_diterima' => 14,
           'created_at' => now(),
           'updated_at' => now(),
         ],
         [
-          'nama' => 'ping-hai',
-          'rt' => 2,
-          'rw' => 10,
-          'jumlah' => 3,
+          'nama_keluarga' => 'ping-hai',
+          'alamat' => 'jalan aka kec. lala no.60',
+          'jumlah_anggota_keluarga' => 3,
+          'jumlah_yang_diterima' => 10.5,
           'created_at' => now(),
           'updated_at' => now(),
         ],
         [
-          'nama' => 'ning-hai',
-          'rt' => 3,
-          'rw' => 11,
-          'jumlah' => 3,
+          'nama_keluarga' => 'ning-hai',
+          'alamat' => 'jalan kanan Rt01/04 no.60',
+          'jumlah_anggota_keluarga' => 2,
+          'jumlah_yang_diterima' => 7,
           'created_at' => now(),
           'updated_at' => now(),
         ],

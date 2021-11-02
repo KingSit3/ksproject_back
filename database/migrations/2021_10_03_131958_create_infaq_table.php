@@ -13,7 +13,7 @@ class CreateInfaqTable extends Migration
      */
     public function up()
     {
-      Schema::create('infaq', function (Blueprint $table) {
+      Schema::connection('zakat')->create('infaq', function (Blueprint $table) {
         $table->id()->unsigned();
         $table->string('nama', 100);
         $table->string('jumlah');
@@ -30,6 +30,6 @@ class CreateInfaqTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('infaq');
+        Schema::connection('zakat')->dropIfExists('infaq');
     }
 }

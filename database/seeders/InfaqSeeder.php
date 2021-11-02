@@ -14,7 +14,7 @@ class InfaqSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('infaq')->insert([
+      DB::connection('zakat')->table('infaq')->insert([
         [
           'nama' => 'Kokomi',
           'jumlah' => 30000,
