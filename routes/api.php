@@ -1,0 +1,68 @@
+<?php
+
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InfaqController;
+use App\Http\Controllers\FitrahController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\MalController;
+use Illuminate\Support\Facades\Route;
+
+/*
+|--------------------------------------------------------------------------
+| API Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register API routes for your application. These
+| routes are loaded by the RouteServiceProvider within a group which
+| is assigned the "api" middleware group. Enjoy building your API!
+|
+*/
+
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::post('login', [LoginController::class, 'login']);
+Route::post('logout', [LoginController::class, 'logout']);
+
+Route::prefix('zakat')->group( function () {
+
+  Route::post('fitrah', [FitrahController::class, 'store']);
+  Route::post('mal', [MalController::class, 'store']);
+  Route::post('infaq', [InfaqController::class, 'store']);
+
+  Route::middleware('auth:sanctum')->group(function(){
+    Route::get('dashboard', [DashboardController::class, 'index']);
+
+    Route::get('fitrah/deleted', [FitrahController::class, 'deleted']);
+    Route::get('fitrah/deleted/{keyword}', [FitrahController::class, 'searchDeleted']);
+    Route::get('fitrah/restore/{id}', [FitrahController::class, 'restore']);
+    Route::get('fitrah/{jenis}/{keyword}', [FitrahController::class, 'search']);
+    Route::get('fitrah/{jenis}', [FitrahController::class, 'index']);
+    Route::put('fitrah/{id}', [FitrahController::class, 'update']);
+    Route::delete('fitrah/{id}', [FitrahController::class, 'softDelete']);
+
+    Route::get('mal/deleted', [MalController::class, 'deleted']);
+    Route::get('mal/deleted/{keyword}', [MalController::class, 'searchDeleted']);
+    Route::get('mal/restore/{id}', [MalController::class, 'restore']);
+    Route::get('mal/{jenis}', [MalController::class, 'index']);
+    Route::delete('mal/{id}', [MalController::class, 'softDelete']);
+    Route::get('mal/{jenis}/{keyword}', [MalController::class, 'search']);
+
+    Route::get('infaq/deleted', [InfaqController::class, 'deleted']);
+    Route::get('infaq', [InfaqController::class, 'index']);
+    Route::get('infaq/restore/{id}', [InfaqController::class, 'restore']);
+    Route::get('infaq/deleted/{keyword}', [InfaqController::class, 'searchDeleted']);
+    Route::delete('infaq/{id}', [InfaqController::class, 'softDelete']);
+    Route::put('infaq/{id}', [InfaqController::class, 'update']);
+    Route::get('infaq/{keyword}', [InfaqController::class, 'search']);
+
+    Route::get('admins', [AdminController::class, 'index']);
+    Route::post('admins', [AdminController::class, 'store']);
+    Route::delete('admins/{id}', [AdminController::class, 'delete']);
+    Route::put('admins/{id}', [AdminController::class, 'update']);
+    
+  });
+  
+});
