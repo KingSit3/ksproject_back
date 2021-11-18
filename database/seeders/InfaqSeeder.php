@@ -25,13 +25,13 @@ class InfaqSeeder extends Seeder
           'nama' => 'Ei',
           'jumlah' => 50000,
           'created_at' => now(),
-          'updated_at' => now(),
+          'updated_at' => '2021-10-01 18:58:23',
         ],
         [
           'nama' => 'Ganyu',
           'jumlah' => 40000,
           'created_at' => now(),
-          'updated_at' => now(),
+          'updated_at' => '2021-10-02 18:58:23',
         ],
       ]);
     }

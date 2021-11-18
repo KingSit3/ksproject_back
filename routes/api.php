@@ -8,6 +8,7 @@ use App\Http\Controllers\zakat\DashboardController;
 use App\Http\Controllers\zakat\InfaqController;
 use App\Http\Controllers\zakat\FitrahController;
 use App\Http\Controllers\zakat\MalController;
+use App\Http\Controllers\zakat\MustahikController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -59,6 +60,8 @@ Route::prefix('zakat')->group( function () {
     Route::delete('infaq/{id}', [InfaqController::class, 'softDelete']);
     Route::put('infaq/{id}', [InfaqController::class, 'update']);
     Route::get('infaq/{keyword}', [InfaqController::class, 'search']);
+    
+    Route::get('mustahik', [MustahikController::class, 'index']);
 
     Route::get('admins', [AdminController::class, 'index']);
     Route::post('admins', [AdminController::class, 'store']);

@@ -17,8 +17,13 @@ class CreateMustahikTable extends Migration
         $table->id()->unsigned();
         $table->string('nama_keluarga', 100);
         $table->string('alamat');
+        $table->string('rt');
+        $table->string('rw');
+        $table->string('kelurahan');
+        $table->string('kecamatan');
         $table->string('jumlah_anggota_keluarga');
-        $table->string('jumlah_yang_diterima');
+        $table->string('jenis_zakat');
+        $table->string('jumlah_zakat');
         $table->softDeletes();
         $table->timestamp('created_at')->useCurrent()->nullable();
         $table->timestamp('updated_at')->nullable();
