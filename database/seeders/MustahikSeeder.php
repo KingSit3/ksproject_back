@@ -23,8 +23,6 @@ class MustahikSeeder extends Seeder
           'kelurahan' => 'kakal',
           'kecamatan' => 'ciputat',
           'jumlah_anggota_keluarga' => 4,
-          'jenis_zakat' => 'beras',
-          'jumlah_zakat' => 14,
           'created_at' => now(),
         ],
         [
@@ -35,8 +33,6 @@ class MustahikSeeder extends Seeder
           'kelurahan' => 'mans',
           'kecamatan' => 'ciputat',
           'jumlah_anggota_keluarga' => 3,
-          'jenis_zakat' => 'beras',
-          'jumlah_zakat' => 10.5,
           'created_at' => now(),
         ],
         [
@@ -47,8 +43,6 @@ class MustahikSeeder extends Seeder
           'kelurahan' => 'laks',
           'kecamatan' => 'pamulang',
           'jumlah_anggota_keluarga' => 2,
-          'jenis_zakat' => 'uang',
-          'jumlah_zakat' => 50000,
           'created_at' => now(),
         ],
       ]);

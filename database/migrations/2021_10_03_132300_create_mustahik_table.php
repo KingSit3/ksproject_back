@@ -14,7 +14,7 @@ class CreateMustahikTable extends Migration
     public function up()
     {
       Schema::connection('zakat')->create('mustahik', function (Blueprint $table) {
-        $table->id()->unsigned();
+        $table->id();
         $table->string('nama_keluarga', 100);
         $table->string('alamat');
         $table->string('rt');
@@ -22,8 +22,6 @@ class CreateMustahikTable extends Migration
         $table->string('kelurahan');
         $table->string('kecamatan');
         $table->string('jumlah_anggota_keluarga');
-        $table->string('jenis_zakat');
-        $table->string('jumlah_zakat');
         $table->softDeletes();
         $table->timestamp('created_at')->useCurrent()->nullable();
         $table->timestamp('updated_at')->nullable();
@@ -37,6 +35,9 @@ class CreateMustahikTable extends Migration
      */
     public function down()
     {
-        Schema::connection('zakat')->dropIfExists('mustahik');
+      // Delete table with foreign key first
+      Schema::connection('zakat')->dropIfExists('transaksi');
+      // Delete this table
+      Schema::connection('zakat')->dropIfExists('mustahik');
     }
 }

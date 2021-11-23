@@ -31,10 +31,6 @@ Route::post('logout', [LoginController::class, 'logout']);
 
 Route::prefix('zakat')->group( function () {
 
-  Route::post('fitrah', [FitrahController::class, 'store']);
-  Route::post('mal', [MalController::class, 'store']);
-  Route::post('infaq', [InfaqController::class, 'store']);
-
   Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard', [DashboardController::class, 'index']);
 
@@ -45,12 +41,14 @@ Route::prefix('zakat')->group( function () {
     Route::get('fitrah/{jenis}', [FitrahController::class, 'index']);
     Route::put('fitrah/{id}', [FitrahController::class, 'update']);
     Route::delete('fitrah/{id}', [FitrahController::class, 'softDelete']);
+    Route::post('fitrah', [FitrahController::class, 'store']);
 
     Route::get('mal/deleted', [MalController::class, 'deleted']);
     Route::get('mal/deleted/{keyword}', [MalController::class, 'searchDeleted']);
     Route::get('mal/restore/{id}', [MalController::class, 'restore']);
     Route::get('mal/{jenis}', [MalController::class, 'index']);
     Route::delete('mal/{id}', [MalController::class, 'softDelete']);
+    Route::post('mal', [MalController::class, 'store']);
     Route::get('mal/{jenis}/{keyword}', [MalController::class, 'search']);
 
     Route::get('infaq/deleted', [InfaqController::class, 'deleted']);
@@ -59,9 +57,12 @@ Route::prefix('zakat')->group( function () {
     Route::get('infaq/deleted/{keyword}', [InfaqController::class, 'searchDeleted']);
     Route::delete('infaq/{id}', [InfaqController::class, 'softDelete']);
     Route::put('infaq/{id}', [InfaqController::class, 'update']);
+    Route::post('infaq', [InfaqController::class, 'store']);
     Route::get('infaq/{keyword}', [InfaqController::class, 'search']);
     
-    Route::get('mustahik', [MustahikController::class, 'index']);
+    Route::get('mustahik/data', [MustahikController::class, 'index']);
+    Route::get('mustahik/deleted', [MustahikController::class, 'deleted']);
+    Route::post('mustahik', [MustahikController::class, 'store']);
 
     Route::get('admins', [AdminController::class, 'index']);
     Route::post('admins', [AdminController::class, 'store']);
