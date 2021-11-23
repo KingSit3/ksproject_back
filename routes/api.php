@@ -60,9 +60,14 @@ Route::prefix('zakat')->group( function () {
     Route::post('infaq', [InfaqController::class, 'store']);
     Route::get('infaq/{keyword}', [InfaqController::class, 'search']);
     
-    Route::get('mustahik/data', [MustahikController::class, 'index']);
-    Route::get('mustahik/deleted', [MustahikController::class, 'deleted']);
+    Route::get('mustahik', [MustahikController::class, 'index']);
+    Route::get('mustahik/deleted', [MustahikController::class, 'deletedData']);
     Route::post('mustahik', [MustahikController::class, 'store']);
+    Route::get('mustahik/deleted/{keyword}', [MustahikController::class, 'searchDeleted']);
+    Route::get('mustahik/{keyword}', [MustahikController::class, 'search']);
+    Route::patch('mustahik/{id}', [MustahikController::class, 'update']);
+    Route::delete('mustahik/{id}', [MustahikController::class, 'delete']);
+    Route::get('mustahik/restore/{id}', [MustahikController::class, 'restore']);
 
     Route::get('admins', [AdminController::class, 'index']);
     Route::post('admins', [AdminController::class, 'store']);
