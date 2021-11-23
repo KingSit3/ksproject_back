@@ -14,7 +14,7 @@ class CreateInfaqTable extends Migration
     public function up()
     {
       Schema::connection('zakat')->create('infaq', function (Blueprint $table) {
-        $table->id()->unsigned();
+        $table->id();
         $table->string('nama', 100);
         $table->string('jumlah');
         $table->softDeletes();

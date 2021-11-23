@@ -14,7 +14,7 @@ class CreateMalTable extends Migration
     public function up()
     {
       Schema::connection('zakat')->create('mal', function (Blueprint $table) {
-        $table->id()->unsigned();
+        $table->id();
         $table->string('nama', 100);
         $table->string('jenis', 50);
         $table->json('data');
