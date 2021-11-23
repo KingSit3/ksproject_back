@@ -116,6 +116,7 @@ class MustahikController extends Controller
           'kecamatan' => 'required',
           'kelurahan' => 'required',
           'jumlahAnggotaKeluarga' => 'required',
+          'updated_at' => now(),
         ]);
 
         try {
@@ -145,7 +146,8 @@ class MustahikController extends Controller
       if ($user->tokenCan('app:zakat')) {
         try {
           DB::connection('zakat')->table('mustahik')->where('id', $id)->update([
-            'deleted_at' => now()
+            'deleted_at' => now(),
+            'updated_at' => now(),
           ]);
           return response('Data Deleted', 200);
 
@@ -163,7 +165,8 @@ class MustahikController extends Controller
       if ($user->tokenCan('app:zakat')) {
         try {
           DB::connection('zakat')->table('mustahik')->where('id', $id)->update([
-            'deleted_at' => null
+            'deleted_at' => null,
+            'updated_at' => now(),
           ]);
           return response('Data Restored', 200);
 
