@@ -178,4 +178,38 @@ class MustahikController extends Controller
       return response('Dare?', 401);
     }
 
+    public function searchMustahik($keyword){
+      $user = Auth::guard('sanctum')->user();
+
+      if ($user->tokenCan('app:zakat')) {
+        $mustahik = DB::connection('zakat')->table('mustahik')
+                    ->where('nama_keluarga', 'like', '%'.$keyword.'%')
+                    ->where('deleted_at', '=', NULL)
+                    ->limit(5)->get();
+
+        return response($mustahik, 200);
+      }
+    }
+
+    public function detail($id){
+      $user = Auth::guard('sanctum')->user();
+
+      if ($user->tokenCan('app:zakat')) {
+        $data = [
+          'transaksi' => DB::connection('zakat')->table('transaksi')
+                          ->where('mustahik_id', $id)
+                          ->paginate(7),
+  
+          'mustahik' => DB::connection('zakat')->table('mustahik')
+                        ->where('id', $id)
+                        ->first(),
+        ];
+
+        return response($data, 200);
+      }
+
+      return response('Dare?!', 401);
+
+    }
+
 }
