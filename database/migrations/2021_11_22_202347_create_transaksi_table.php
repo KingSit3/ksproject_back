@@ -16,10 +16,8 @@ class CreateTransaksiTable extends Migration
         Schema::connection('zakat')->create('transaksi', function (Blueprint $table) {
             $table->id();
             $table->foreignId('mustahik_id')->constrained('mustahik');
-            $table->string('jenis_zakat');
+            $table->string('jenis_zakat')->comment('Beras | Uang');
             $table->string('jumlah');
-            $table->string('status')->comment('0.Berlangsung 1.Sukses');
-            $table->softDeletes();
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->nullable();
         });
