@@ -21,7 +21,14 @@ class DashboardController extends Controller
                                     ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTHNAME(updated_at) as month') )
                                     ->groupBy('month')
                                     ->orderBy('updated_at', 'ASC')
-                                    ->get()
+                                    ->get(),
+
+                'pengeluaran' => DB::connection('zakat')->table('transaksi_infaq')
+                                              ->whereYear('updated_at', '=', $currentYear)
+                                              ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTHNAME(updated_at) as month') )
+                                              ->groupBy('month')
+                                              ->orderBy('updated_at', 'ASC')
+                                              ->get()
             ],
             'fitrah' => [
                 'year' => $currentYear,

@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         MalSeeder::class,
         MustahikSeeder::class,
         UserSeeder::class,
-        TransaksiSeeder::class,
+        TransaksiZakatSeeder::class,
+        TransaksiInfaqSeeder::class
       ]);
     }
 }

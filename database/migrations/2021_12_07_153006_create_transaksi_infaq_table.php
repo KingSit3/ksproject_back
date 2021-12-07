@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTransaksiTable extends Migration
+class CreateTransaksiInfaqTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,10 @@ class CreateTransaksiTable extends Migration
      */
     public function up()
     {
-        Schema::connection('zakat')->create('transaksi', function (Blueprint $table) {
+        Schema::connection('zakat')->create('transaksi_infaq', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('mustahik_id')->constrained('mustahik');
-            $table->string('jenis_zakat')->comment('Beras | Uang');
-            $table->string('jumlah');
+            $table->integer('jumlah')->unsigned();
+            $table->string('ket');
             $table->timestamp('created_at')->useCurrent()->nullable();
             $table->timestamp('updated_at')->nullable();
         });
@@ -30,6 +29,6 @@ class CreateTransaksiTable extends Migration
      */
     public function down()
     {
-        Schema::connection('zakat')->dropIfExists('transaksi');
+        Schema::dropIfExists('transaksi_infaq');
     }
 }

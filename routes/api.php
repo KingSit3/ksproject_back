@@ -9,7 +9,7 @@ use App\Http\Controllers\zakat\InfaqController;
 use App\Http\Controllers\zakat\FitrahController;
 use App\Http\Controllers\zakat\MalController;
 use App\Http\Controllers\zakat\MustahikController;
-use App\Http\Controllers\zakat\TransaksiController;
+use App\Http\Controllers\zakat\TransaksiZakatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -72,11 +72,11 @@ Route::prefix('zakat')->group( function () {
     Route::get('mustahik/detail/{id}', [MustahikController::class, 'detail']);
     Route::get('mustahik/restore/{id}', [MustahikController::class, 'restore']);
 
-    Route::get('transaksi', [TransaksiController::class, 'index']);
-    Route::patch('transaksi/{id}', [TransaksiController::class, 'update']);
-    Route::post('transaksi', [TransaksiController::class, 'store']);
-    Route::delete('transaksi/{id}', [TransaksiController::class, 'delete']);
-    Route::get('transaksi/{keyword}', [TransaksiController::class, 'searchData']);
+    Route::get('transaksizakat', [TransaksiZakatController::class, 'index']);
+    Route::patch('transaksizakat/{id}', [TransaksiZakatController::class, 'update']);
+    Route::post('transaksizakat', [TransaksiZakatController::class, 'store']);
+    Route::delete('transaksizakat/{id}', [TransaksiZakatController::class, 'delete']);
+    Route::get('transaksizakat/{keyword}', [TransaksiZakatController::class, 'searchData']);
 
     Route::get('admins', [AdminController::class, 'index']);
     Route::post('admins', [AdminController::class, 'store']);

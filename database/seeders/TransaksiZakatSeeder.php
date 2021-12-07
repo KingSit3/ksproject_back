@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
-class TransaksiSeeder extends Seeder
+class TransaksiZakatSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,7 @@ class TransaksiSeeder extends Seeder
      */
     public function run()
     {
-        DB::connection('zakat')->table('transaksi')->insert([
+        DB::connection('zakat')->table('transaksi_zakat')->insert([
             [
                 'mustahik_id' => 1,
                 'jenis_zakat' => 'uang',

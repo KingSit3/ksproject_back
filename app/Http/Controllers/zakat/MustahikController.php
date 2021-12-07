@@ -196,7 +196,7 @@ class MustahikController extends Controller
 
       if ($user->tokenCan('app:zakat')) {
         $data = [
-          'transaksi' => DB::connection('zakat')->table('transaksi')
+          'transaksi' => DB::connection('zakat')->table('transaksi_zakat')
                           ->where('mustahik_id', $id)
                           ->paginate(7),
   

@@ -36,7 +36,7 @@ class CreateMustahikTable extends Migration
     public function down()
     {
       // Delete table with foreign key first
-      Schema::connection('zakat')->dropIfExists('transaksi');
+      Schema::connection('zakat')->dropIfExists('transaksi_zakat');
       // Delete this table
       Schema::connection('zakat')->dropIfExists('mustahik');
     }
