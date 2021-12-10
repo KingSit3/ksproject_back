@@ -12,23 +12,52 @@ class DashboardController extends Controller
         $currentYear = date('Y');
         $dbFitrah = DB::connection('zakat')->table('fitrah')->where('deleted_at',  '=', null)->whereYear('updated_at', '=', $currentYear);
         
+        $i = 1;
+
+        while ($i <= 12) {
+            $queryPemasukkan =  DB::connection('zakat')->table('infaq')
+                                    ->where('deleted_at',  '=', null)
+                                    ->whereYear('updated_at', '=', $currentYear)
+                                    ->whereMonth('updated_at', '=', $i)
+                                    ->select( DB::raw('SUM(jumlah) as total'))
+                                    ->get();
+
+            $queryPengeluaran =  DB::connection('zakat')->table('transaksi_infaq')
+                                    ->whereYear('updated_at', '=', $currentYear)
+                                    ->whereMonth('updated_at', '=', $i)
+                                    ->select( DB::raw('SUM(jumlah) as total'))
+                                    ->get();
+            $i++;
+            $dataPemasukkanInfaq[] = $queryPemasukkan;
+            $dataPengeluaranInfaq[] = $queryPengeluaran;
+        }
+
+        // Optimisasi Query Infaq
+        // Get all data by year
+        // Loop data, lalu masukkan data per bulan / atau (kalau bisa) Pakai collection()->map()
+        
+
+
         $data = [
             'infaq' => [
                 'year' => $currentYear,
-                'totalInfaq' => DB::connection('zakat')->table('infaq')
-                                    ->where('deleted_at',  '=', null)
-                                    ->whereYear('updated_at', '=', $currentYear)
-                                    ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTHNAME(updated_at) as month') )
-                                    ->groupBy('month')
-                                    ->orderBy('updated_at', 'ASC')
-                                    ->get(),
+                'totalInfaq' => $dataPemasukkanInfaq,
+                'pengeluaran' => $dataPengeluaranInfaq
 
-                'pengeluaran' => DB::connection('zakat')->table('transaksi_infaq')
-                                              ->whereYear('updated_at', '=', $currentYear)
-                                              ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTHNAME(updated_at) as month') )
-                                              ->groupBy('month')
-                                              ->orderBy('updated_at', 'ASC')
-                                              ->get()
+                // 'totalInfaq' =>  DB::connection('zakat')->table('infaq')
+                //                     ->where('deleted_at',  '=', null)
+                //                     ->whereYear('updated_at', '=', $currentYear)
+                //                     ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTH(updated_at) as month') )
+                //                     ->groupBy('month')
+                //                     ->orderBy('updated_at', 'ASC')
+                //                     ->get(),
+                
+                // 'pengeluaran' => DB::connection('zakat')->table('transaksi_infaq')
+                //                               ->whereYear('updated_at', '=', $currentYear)
+                //                               ->select( DB::raw('SUM(jumlah) as total'), DB::raw('MONTH(updated_at) as month') )
+                //                               ->groupBy('month')
+                //                               ->orderBy('updated_at', 'ASC')
+                //                               ->get()
             ],
             'fitrah' => [
                 'year' => $currentYear,
