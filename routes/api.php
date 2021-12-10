@@ -9,6 +9,7 @@ use App\Http\Controllers\zakat\InfaqController;
 use App\Http\Controllers\zakat\FitrahController;
 use App\Http\Controllers\zakat\MalController;
 use App\Http\Controllers\zakat\MustahikController;
+use App\Http\Controllers\zakat\TransaksiInfaqController;
 use App\Http\Controllers\zakat\TransaksiZakatController;
 use Illuminate\Support\Facades\Route;
 
@@ -77,6 +78,12 @@ Route::prefix('zakat')->group( function () {
     Route::post('transaksizakat', [TransaksiZakatController::class, 'store']);
     Route::delete('transaksizakat/{id}', [TransaksiZakatController::class, 'delete']);
     Route::get('transaksizakat/{keyword}', [TransaksiZakatController::class, 'searchData']);
+
+    Route::get('transaksiinfaq', [TransaksiInfaqController::class, 'index']);
+    Route::post('transaksiinfaq', [TransaksiInfaqController::class, 'store']);
+    Route::patch('transaksiinfaq/{id}', [TransaksiInfaqController::class, 'update']);
+    Route::delete('transaksiinfaq/{id}', [TransaksiInfaqController::class, 'delete']);
+    Route::post('transaksiinfaq/search', [TransaksiInfaqController::class, 'search']);
 
     Route::get('admins', [AdminController::class, 'index']);
     Route::post('admins', [AdminController::class, 'store']);
