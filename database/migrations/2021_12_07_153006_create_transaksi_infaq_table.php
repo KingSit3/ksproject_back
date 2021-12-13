@@ -29,6 +29,6 @@ class CreateTransaksiInfaqTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('transaksi_infaq');
+        Schema::connection('zakat')->dropIfExists('transaksi_infaq');
     }
 }
