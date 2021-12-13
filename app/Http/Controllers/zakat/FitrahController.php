@@ -7,6 +7,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use PDF;
 
 class FitrahController extends Controller
 {
@@ -37,11 +38,13 @@ class FitrahController extends Controller
           'nama' => 'required|max:100',
           'jenis' => 'required|max:5',
           'jumlah' => 'required|numeric',
+          'no_telp' => 'max:25',
         ]);
   
         try {
           DB::connection('zakat')->table('fitrah')->insert([
             'nama' => $req['nama'],
+            'no_telp' => $req['no_telp'],
             'jenis' => $req['jenis'],
             'jumlah' => $req['jumlah'],
             'created_at' => now(),
@@ -98,11 +101,13 @@ class FitrahController extends Controller
           'nama' => 'required|max:100',
           'jenis' => 'required|max:5',
           'jumlah' => 'required|numeric',
+          'no_telp' => 'max:25'
         ]);
   
         try {
           DB::connection('zakat')->table('fitrah')->where('id', $id)->update([
             'nama' => $req['nama'],
+            'no_telp' => $req['no_telp'],
             'jenis' => $req['jenis'],
             'jumlah' => $req['jumlah'],
             'updated_at' => now(),
@@ -167,6 +172,14 @@ class FitrahController extends Controller
       }
       return response('Forbidden', 403);
 
+    }
+
+    public function export(){
+      
+      return view('zakat.fitrah');
+
+      $pdf = PDF::loadView('zakat.fitrah');
+      return $pdf->download('invoice.pdf');
     }
 }
 
