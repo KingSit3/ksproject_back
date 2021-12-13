@@ -4,6 +4,7 @@ use App\Http\Controllers\LoginController;
 
 // Zakat Route
 use App\Http\Controllers\zakat\AdminController;
+use App\Http\Controllers\zakat\CekStatusZakatController;
 use App\Http\Controllers\zakat\DashboardController;
 use App\Http\Controllers\zakat\InfaqController;
 use App\Http\Controllers\zakat\FitrahController;
@@ -33,6 +34,11 @@ Route::post('logout', [LoginController::class, 'logout']);
 
 Route::prefix('zakat')->group( function () {
 
+  Route::get('fitrahexport', [FitrahController::class, 'export']);
+
+// Cek Status Zakat
+Route::get('cekstatuszakat/{noTelp}', [CekStatusZakatController::class, 'index']);
+
   Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard', [DashboardController::class, 'index']);
 
@@ -44,6 +50,8 @@ Route::prefix('zakat')->group( function () {
     Route::put('fitrah/{id}', [FitrahController::class, 'update']);
     Route::delete('fitrah/{id}', [FitrahController::class, 'softDelete']);
     Route::post('fitrah', [FitrahController::class, 'store']);
+
+    
 
     Route::get('mal/deleted', [MalController::class, 'deleted']);
     Route::get('mal/deleted/{keyword}', [MalController::class, 'searchDeleted']);
