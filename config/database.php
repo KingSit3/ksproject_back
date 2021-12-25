@@ -65,15 +65,13 @@ return [
 
         'zakat' => [
             'driver' => 'pgsql',
-            'url' => env('DATABASE_URL'),
+            'url' => env('ZAKATDBHOSTURL'),
             'host' => env('ZAKATDBHOST', '127.0.0.1'),
             'port' => env('ZAKATDBPORT', '3306'),
             'database' => env('ZAKATDB', 'ksp_zakat'),
             'username' => env('ZAKATDBUSERNAME', 'forge'),
             'password' => env('ZAKATDBPASSWORD', ''),
-            'unix_socket' => env('DB_SOCKET', ''),
             'charset' => 'utf8',
-            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
