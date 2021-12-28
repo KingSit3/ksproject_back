@@ -36,8 +36,8 @@ Route::prefix('zakat')->group( function () {
 
   Route::get('fitrahexport', [FitrahController::class, 'export']);
 
-// Cek Status Zakat
-Route::get('cekstatuszakat/{noTelp}', [CekStatusZakatController::class, 'index']);
+  // Cek Status Zakat
+  Route::get('cekstatuszakat/{noTelp}', [CekStatusZakatController::class, 'index']);
 
   Route::middleware('auth:sanctum')->group(function(){
     Route::get('dashboard', [DashboardController::class, 'index']);
@@ -50,8 +50,6 @@ Route::get('cekstatuszakat/{noTelp}', [CekStatusZakatController::class, 'index']
     Route::put('fitrah/{id}', [FitrahController::class, 'update']);
     Route::delete('fitrah/{id}', [FitrahController::class, 'softDelete']);
     Route::post('fitrah', [FitrahController::class, 'store']);
-
-    
 
     Route::get('mal/deleted', [MalController::class, 'deleted']);
     Route::get('mal/deleted/{keyword}', [MalController::class, 'searchDeleted']);
