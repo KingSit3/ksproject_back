@@ -17,7 +17,7 @@ class CreateFitrahTable extends Migration
         $table->id();
         $table->string('nama', 100);
         $table->string('jenis', 5);
-        $table->string('jumlah', 10);
+        $table->decimal('jumlah', 10, 1);
         $table->softDeletes();
         $table->timestamp('created_at')->useCurrent()->nullable();
         $table->timestamp('updated_at')->nullable();
