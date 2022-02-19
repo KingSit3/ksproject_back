@@ -25,6 +25,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+
+Route::get('/test', function (){
+  return " Ini test laravel";
+});
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
@@ -35,6 +39,7 @@ Route::post('logout', [LoginController::class, 'logout']);
 Route::prefix('zakat')->group( function () {
 
   Route::get('fitrahexport', [FitrahController::class, 'export']);
+  Route::get('infaqexport', [InfaqController::class, 'export']);
 
   // Cek Status Zakat
   Route::get('cekstatuszakat/{noTelp}', [CekStatusZakatController::class, 'index']);

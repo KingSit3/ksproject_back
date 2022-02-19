@@ -153,4 +153,36 @@ class InfaqController extends Controller
       }
       return response('Forbidden', 403);
     }
+
+    public function export(){
+      $currentYear = date('Y');
+      $month = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+      $i = 1;
+
+      while ($i <= 12) {
+        $totalInfaq[] =  DB::connection('zakat')->table('infaq')
+                                ->where('deleted_at',  '=', null)
+                                ->whereYear('updated_at', '=', $currentYear)
+                                ->whereMonth('updated_at', '=', $i)
+                                ->sum('jumlah');
+        $i++;
+    }
+
+    $totalOrangInfaq = DB::connection('zakat')->table('infaq')
+                      ->where('deleted_at', '!=' , null)
+                      ->whereYear('updated_at', '=', $currentYear)
+                      ->count();
+
+      $data = [
+        'year' => $currentYear,
+        'totalOrangInfaq' => $totalOrangInfaq,
+        'totalInfaq' => $totalInfaq,
+        'month' => $month,
+      ];
+
+      return view('zakat.infaq', $data);
+
+      $pdf = PDF::loadView('zakat.infaq');
+      return $pdf->download('Infaq Al-Istiqomah - '.$currentYear.'.pdf');
+    }
 }

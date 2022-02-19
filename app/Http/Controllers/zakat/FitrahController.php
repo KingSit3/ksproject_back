@@ -175,11 +175,36 @@ class FitrahController extends Controller
     }
 
     public function export(){
-      
-      return view('zakat.fitrah');
+      $currentYear = date('Y');
+
+      $zakatUang = DB::connection('zakat')->table('fitrah')
+                        ->where('jenis', 'uang')
+                        ->where('deleted_at',  '=', null)
+                        ->whereYear('updated_at', '=', date('Y'))
+                        ->sum('jumlah');
+      $zakatBeras = DB::connection('zakat')->table('fitrah')
+                        ->where('jenis', 'beras')
+                        ->where('deleted_at',  '=', null)
+                        ->whereYear('updated_at', '=', date('Y'))
+                        ->sum('jumlah');
+
+      $totalMuzakki = DB::connection('zakat')->table('fitrah')
+                        ->where('deleted_at', '!=' , null)
+                        ->whereYear('updated_at', '=', $currentYear)
+                        ->count();
+
+
+      $data = [
+        'year' => $currentYear,
+        'totalMuzakki' => $totalMuzakki,
+        'totalZakatUang' => 'Rp.'.number_format($zakatUang,0, ',' , '.'),
+        'totalZakatBeras' => $zakatBeras,
+      ];
+
+      return view('zakat.fitrah', $data);
 
       $pdf = PDF::loadView('zakat.fitrah');
-      return $pdf->download('invoice.pdf');
+      return $pdf->download('Fitrah Al-Istiqomah - '.$currentYear.'.pdf');
     }
 }
 
