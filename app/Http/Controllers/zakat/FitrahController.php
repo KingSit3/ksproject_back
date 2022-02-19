@@ -201,9 +201,9 @@ class FitrahController extends Controller
         'totalZakatBeras' => $zakatBeras,
       ];
 
-      return view('zakat.fitrah', $data);
+      // return view('zakat.fitrah', $data);
 
-      $pdf = PDF::loadView('zakat.fitrah');
+      $pdf = PDF::loadView('zakat.fitrah', $data);
       return $pdf->download('Fitrah Al-Istiqomah - '.$currentYear.'.pdf');
     }
 }

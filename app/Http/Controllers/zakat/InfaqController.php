@@ -180,9 +180,9 @@ class InfaqController extends Controller
         'month' => $month,
       ];
 
-      return view('zakat.infaq', $data);
+      // return view('zakat.infaq', $data);
 
-      $pdf = PDF::loadView('zakat.infaq');
+      $pdf = PDF::loadView('zakat.infaq', $data);
       return $pdf->download('Infaq Al-Istiqomah - '.$currentYear.'.pdf');
     }
 }
