@@ -192,6 +192,10 @@ class FitrahController extends Controller
                         ->where('deleted_at', '!=' , null)
                         ->whereYear('updated_at', '=', $currentYear)
                         ->count();
+      $dataZakat = DB::connection('zakat')->table('fitrah')
+      ->where('deleted_at',  '=', null)
+      ->whereYear('updated_at', '=', date('Y'))
+      ->get();
 
 
       $data = [
@@ -199,6 +203,7 @@ class FitrahController extends Controller
         'totalMuzakki' => $totalMuzakki,
         'totalZakatUang' => 'Rp.'.number_format($zakatUang,0, ',' , '.'),
         'totalZakatBeras' => $zakatBeras,
+        'dataZakat' => $dataZakat
       ];
 
       // return view('zakat.fitrah', $data);
