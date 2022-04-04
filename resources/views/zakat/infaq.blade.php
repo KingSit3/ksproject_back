@@ -22,7 +22,7 @@
   <!-- {{-- Header --}} -->
   <div style="text-align: center; border-bottom-color: blue; border-bottom-width: 120px; border: 10px;">
     <h1>
-      Laporan Zakat Fitrah
+      Laporan Infaq
       <br>
       Masjid Al-Istiqomah 
     </h1>
