@@ -189,14 +189,13 @@ class FitrahController extends Controller
                         ->sum('jumlah');
 
       $totalMuzakki = DB::connection('zakat')->table('fitrah')
-                        ->where('deleted_at', '!=' , null)
+                        ->where('deleted_at', '=' , null)
                         ->whereYear('updated_at', '=', $currentYear)
                         ->count();
       $dataZakat = DB::connection('zakat')->table('fitrah')
       ->where('deleted_at',  '=', null)
       ->whereYear('updated_at', '=', date('Y'))
       ->get();
-
 
       $data = [
         'year' => $currentYear,

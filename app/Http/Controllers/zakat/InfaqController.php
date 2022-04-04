@@ -170,7 +170,7 @@ class InfaqController extends Controller
     }
 
     $totalOrangInfaq = DB::connection('zakat')->table('infaq')
-                      ->where('deleted_at', '!=' , null)
+                      ->where('deleted_at', '=' , null)
                       ->whereYear('updated_at', '=', $currentYear)
                       ->count();
 
