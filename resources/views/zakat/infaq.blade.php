@@ -33,9 +33,9 @@
   <!-- {{-- End Header --}} -->
   <table border="1" style="justify-content: center; align-items: center; text-align: center; width: 100%; padding: 10px 50px;">
     <tr>
-      <td style="width: 50px">No</td>
-      <td style="width: 200px">Bulan</td>
-      <td style="width: 500px">Total Infaq</td>
+      <td style="width: 10%; font-weight: bold">No</td>
+      <td style="width: 40%; font-weight: bold">Bulan</td>
+      <td style="width: 40%; font-weight: bold">Total Infaq</td>
     </tr>
     @forelse ($totalInfaq as $infaq)
       <tr>

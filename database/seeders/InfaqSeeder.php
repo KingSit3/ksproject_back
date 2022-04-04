@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
 
 class InfaqSeeder extends Seeder
 {
@@ -14,25 +15,15 @@ class InfaqSeeder extends Seeder
      */
     public function run()
     {
-      DB::connection('zakat')->table('infaq')->insert([
-        [
-          'nama' => 'Kokomi',
-          'jumlah' => 30000,
-          'created_at' => now(),
-          'updated_at' => now(),
-        ],
-        [
-          'nama' => 'Ei',
-          'jumlah' => 50000,
-          'created_at' => now(),
-          'updated_at' => '2021-10-01 18:58:23',
-        ],
-        [
-          'nama' => 'Ganyu',
-          'jumlah' => 40000,
-          'created_at' => now(),
-          'updated_at' => '2021-10-02 18:58:23',
-        ],
-      ]);
+      $faker = Faker::create('id_ID');
+
+      for ($i=0; $i < 100; $i++) { 
+        DB::connection('zakat')->table('infaq')->insert([
+          'nama' => $faker->name(),
+          'jumlah' => $faker->randomNumber(5, true),
+          'created_at' => $faker->dateTimeThisYear(),
+          'updated_at' => $faker->dateTimeThisYear(),
+        ]);
+      }
     }
 }

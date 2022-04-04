@@ -14,7 +14,7 @@
     </h3>
   </div>
   <!-- {{-- End Header --}} -->
-  <div style="width: 100%; padding: 10px 300px;">
+  <div style="width: 100%;">
     <table>
       <tr>
         <td>Jumlah Muzakki</td>
@@ -33,26 +33,29 @@
       </tr>
       <tr><td>&nbsp;</td></tr>
     </table>
-
-    <table border="1"> 
+    
+    <table border="1" style="width: 100%">
       <thead>
-        <th style="padding: 0 10px">No</th>
-        <th style="padding: 0 10px">Nama</th>
-        <th style="padding: 0 10px">No Telp</th>
-        <th style="padding: 0 10px">Jenis Zakat</th>
-        <th style="padding: 0 10px">Jumlah Zakat</th>
-        <th style="padding: 0 10px">Tanggal Zakat</th>
+        <th style="width: 5%">No</th>
+        <th style="width: 25%">Nama</th>
+        <th style="width: 25%">No Telp</th>
+        <th style="width: 10%">Jenis Zakat</th>
+        <th style="width: 20%">Jumlah Zakat</th>
+        <th style="width: 20%">Tanggal Zakat</th>
       </thead>
+    </table>
+
+    <table border="1" style="width: 100%"> 
       <tbody>
         
         @forelse ($dataZakat as $zakat)
         <tr>
-          <td style="padding: 0 10px">{{ $loop->iteration }}</td>
-          <td style="padding: 0 10px">{{ $zakat->nama }}</td>
-          <td style="padding: 0 10px">{{ $zakat->no_telp ?? '-' }}</td>
-          <td style="padding: 0 10px">{{ $zakat->jenis ?? '-' }}</td>
-          <td style="padding: 0 10px">{{ $zakat->jenis == 'uang' ? 'Rp.'.number_format($zakat->jumlah,0, ',' , '.') : number_format($zakat->jumlah, 0).' Liter' }}</td>
-          <td style="padding: 0 10px">{{  Carbon\Carbon::parse($zakat->created_at)->format('d-m-Y') }}</td>
+          <td style="width: 5%">{{ $loop->iteration }}</td>
+          <td style="width: 25%">{{ $zakat->nama }}</td>
+          <td style="width: 25%">{{ $zakat->no_telp ?? '-' }}</td>
+          <td style="width: 10%">{{ $zakat->jenis ?? '-' }}</td>
+          <td style="width: 20%">{{ $zakat->jenis == 'uang' ? 'Rp.'.number_format($zakat->jumlah,0, ',' , '.') : number_format($zakat->jumlah, 0).' Liter' }}</td>
+          <td style="width: 20%">{{  Carbon\Carbon::parse($zakat->created_at)->format('d-m-Y') }}</td>
         </tr>
 
         @empty
