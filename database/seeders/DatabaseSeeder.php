@@ -14,13 +14,13 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
       $this->call([
-        FitrahSeeder::class,
-        InfaqSeeder::class,
-        MalSeeder::class,
-        MustahikSeeder::class,
+        // FitrahSeeder::class,
+        // InfaqSeeder::class,
+        // MalSeeder::class,
+        // MustahikSeeder::class,
         UserSeeder::class,
-        TransaksiZakatSeeder::class,
-        TransaksiInfaqSeeder::class
+        // TransaksiZakatSeeder::class,
+        // TransaksiInfaqSeeder::class
       ]);
     }
 }
