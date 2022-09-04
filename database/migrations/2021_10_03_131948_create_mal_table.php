@@ -15,7 +15,7 @@ class CreateMalTable extends Migration
     {
       Schema::connection('zakat')->create('mal', function (Blueprint $table) {
         $table->id();
-        $table->string('nama', 100);
+        $table->foreignId('user_id')->constrained('users');
         $table->string('jenis', 50);
         $table->json('data');
         $table->string('total');

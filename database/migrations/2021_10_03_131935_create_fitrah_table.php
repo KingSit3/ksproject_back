@@ -15,7 +15,7 @@ class CreateFitrahTable extends Migration
     {
       Schema::connection('zakat')->create('fitrah', function (Blueprint $table) {
         $table->id();
-        $table->string('nama', 100);
+        $table->foreignId('user_id')->constrained('users');
         $table->string('jenis', 5);
         $table->decimal('jumlah', 10, 1);
         $table->softDeletes();
