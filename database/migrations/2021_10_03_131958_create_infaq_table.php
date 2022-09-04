@@ -16,7 +16,6 @@ class CreateInfaqTable extends Migration
       Schema::connection('zakat')->create('infaq', function (Blueprint $table) {
         $table->id();
         $table->foreignId('user_id')->constrained('users');
-        $table->string('nama', 100);
         $table->decimal('jumlah', 10, 1);
         $table->softDeletes();
         $table->timestamp('created_at')->useCurrent()->nullable();

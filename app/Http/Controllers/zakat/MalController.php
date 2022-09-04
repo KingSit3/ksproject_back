@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\zakat;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,10 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
-        $mal = DB::connection('zakat')->table('mal')
+        $mal = DB::connection('zakat')
+                      ->table('mal')
+                      ->join('users', 'mal.user_id', '=', 'users.id')
+                      ->select('mal.*', 'users.name')
                       ->where(['jenis' => $jenis, 'deleted_at' => null])
                       ->paginate(10);
   
@@ -38,9 +42,13 @@ class MalController extends Controller
         );
   
         try {
-  
+          $user = User::create([
+            'name' => $req['nama'],
+            'role' => 2,
+          ]);
+
           DB::connection('zakat')->table('mal')->insert([
-            'nama' => $req['nama'],
+            'user_id' => $user->id,
             'jenis' => $req['jenis'],
             'data' => json_encode($req['data']),
             'total' => $req['total'],
@@ -60,12 +68,16 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
-        $mal = DB::connection('zakat')->table('mal')->where([
-                                        'jenis' => $jenis, 
-                                        'deleted_at' => null,
-                                      ])
-                              ->where('nama', 'like', '%'.$keyword.'%')
-                              ->paginate(10);
+        $mal = DB::connection('zakat')
+                  ->table('mal')
+                  ->join('users', 'mal.user_id', '=', 'users.id')
+                  ->select('mal.*', 'users.name')
+                  ->where([
+                    'jenis' => $jenis, 
+                    'deleted_at' => null,
+                  ])
+                  ->where('name', 'like', '%'.$keyword.'%')
+                  ->paginate(10);
   
         return response($mal, 200);
       }
@@ -93,7 +105,12 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $deletedMal = DB::connection('zakat')->table('mal')->where('deleted_at', '!=', null)->paginate(10);
+        $deletedMal = DB::connection('zakat')
+                        ->table('mal')
+                        ->where('deleted_at', '!=', null)
+                        ->join('users', 'mal.user_id', '=', 'users.id')
+                        ->select('mal.*', 'users.name')
+                        ->paginate(10);
   
         return response($deletedMal, 200);
       }
@@ -104,9 +121,12 @@ class MalController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $mal = DB::connection('zakat')->table('mal')
+        $mal = DB::connection('zakat')
+                      ->table('mal')
+                      ->join('users', 'mal.user_id', '=', 'users.id')
+                      ->select('mal.*', 'users.name')
                       ->where('deleted_at', '!=', null)
-                      ->where('nama', 'like', '%'.$keyword.'%')
+                      ->where('name', 'like', '%'.$keyword.'%')
                       ->paginate(10);
         return response($mal, 200);
       }

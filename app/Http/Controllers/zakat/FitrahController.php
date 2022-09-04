@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\zakat;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,10 +19,12 @@ class FitrahController extends Controller
       
       if ($user->tokenCan('app:zakat')) {
         $fitrah = DB::connection('zakat')->table('fitrah')
+                    ->join('users', 'fitrah.user_id', '=', 'users.id')
+                    ->select('fitrah.*', 'users.name')
                     ->where(['jenis' => $jenis, 'deleted_at' => null])
                     ->paginate(10);
 
-        return response($fitrah, 200);
+        return response($fitrah, 200);  
       }
 
       return response('Forbidden', 403);
@@ -42,8 +45,13 @@ class FitrahController extends Controller
         ]);
   
         try {
+          $user = User::create([
+            'name' => $req['nama'],
+            'role' => 2,
+          ]);
+
           DB::connection('zakat')->table('fitrah')->insert([
-            'nama' => $req['nama'],
+            'user_id' => $user->id,
             'no_telp' => $req['no_telp'],
             'jenis' => $req['jenis'],
             'jumlah' => $req['jumlah'],
@@ -65,11 +73,14 @@ class FitrahController extends Controller
       // get id from Sanctum Middleware with guard helper
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
-        $fitrah = DB::connection('zakat')->table('fitrah')->where([
+        $fitrah = DB::connection('zakat')->table('fitrah')
+                                          ->join('users', 'fitrah.user_id', '=', 'users.id')
+                                          ->select('fitrah.*', 'users.name')
+                                          ->where([
                                               'jenis' => $jenis, 
                                               'deleted_at' => null,
                                             ])
-                                    ->where('nama', 'like', '%'.$keyword.'%')
+                                    ->where('name', 'like', '%'.$keyword.'%')
                                     ->paginate(10);
   
         return response($fitrah, 200);
@@ -83,8 +94,10 @@ class FitrahController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
         $fitrah = DB::connection('zakat')->table('fitrah')
+                      ->join('users', 'fitrah.user_id', '=', 'users.id')
+                      ->select('fitrah.*', 'users.name')
                       ->where('deleted_at', '!=', null)
-                      ->where('nama', 'like', '%'.$keyword.'%')
+                      ->where('name', 'like', '%'.$keyword.'%')
                       ->paginate(10);
   
         return response($fitrah, 200);
@@ -105,13 +118,18 @@ class FitrahController extends Controller
         ]);
   
         try {
-          DB::connection('zakat')->table('fitrah')->where('id', $id)->update([
-            'nama' => $req['nama'],
-            'no_telp' => $req['no_telp'],
-            'jenis' => $req['jenis'],
-            'jumlah' => $req['jumlah'],
-            'updated_at' => now(),
-          ]);
+          DB::connection('zakat')
+            ->table('fitrah')
+            ->where('fitrah.id', $id)
+            ->join('users', 'fitrah.user_id', '=', 'users.id')
+            ->update([
+              'users.name' => $req['nama'],
+              'no_telp' => $req['no_telp'],
+              'jenis' => $req['jenis'],
+              'jumlah' => $req['jumlah'],
+              'fitrah.updated_at' => now(),
+            ]);
+
           return response('Data Disimpan', 201);
   
         } catch (QueryException $ex) {
@@ -147,7 +165,12 @@ class FitrahController extends Controller
       // get id from Sanctum Middleware with guard helper
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $deletedFitrah = DB::connection('zakat')->table('fitrah')->where('deleted_at', '!=', null)->paginate(10);
+        $deletedFitrah = DB::connection('zakat')
+                            ->table('fitrah')
+                            ->where('deleted_at', '!=', null)
+                            ->join('users', 'fitrah.user_id', '=', 'users.id')
+                            ->select('fitrah.*', 'users.name')
+                            ->paginate(10);
   
         return response($deletedFitrah, 200);
       }
@@ -167,25 +190,30 @@ class FitrahController extends Controller
           return response('success', 200);
   
         } catch (QueryException $ex) {
-          return response('Ups Something wen wrong error:'.$ex, 400);
+          return response('Ups Something went wrong error:'.$ex, 400);
         }
       }
       return response('Forbidden', 403);
 
     }
 
-    public function export(){
+    public function export()
+    {
       $currentYear = date('Y');
 
       $zakatUang = DB::connection('zakat')->table('fitrah')
+                        ->join('users', 'fitrah.user_id', '=', 'users.id')
+                        ->select('fitrah.*', 'users.name')
                         ->where('jenis', 'uang')
-                        ->where('deleted_at',  '=', null)
-                        ->whereYear('updated_at', '=', date('Y'))
+                        ->where('fitrah.deleted_at',  '=', null)
+                        ->whereYear('fitrah.updated_at', '=', date('Y'))
                         ->sum('jumlah');
       $zakatBeras = DB::connection('zakat')->table('fitrah')
+                        ->join('users', 'fitrah.user_id', '=', 'users.id')
+                        ->select('fitrah.*', 'users.name')
                         ->where('jenis', 'beras')
-                        ->where('deleted_at',  '=', null)
-                        ->whereYear('updated_at', '=', date('Y'))
+                        ->where('fitrah.deleted_at',  '=', null)
+                        ->whereYear('fitrah.updated_at', '=', date('Y'))
                         ->sum('jumlah');
 
       $totalMuzakki = DB::connection('zakat')->table('fitrah')
@@ -193,8 +221,10 @@ class FitrahController extends Controller
                         ->whereYear('updated_at', '=', $currentYear)
                         ->count();
       $dataZakat = DB::connection('zakat')->table('fitrah')
-      ->where('deleted_at',  '=', null)
-      ->whereYear('updated_at', '=', date('Y'))
+      ->join('users', 'fitrah.user_id', '=', 'users.id')
+      ->select('fitrah.*', 'users.name')
+      ->where('fitrah.deleted_at',  '=', null)
+      ->whereYear('fitrah.updated_at', '=', date('Y'))
       ->get();
 
       $data = [

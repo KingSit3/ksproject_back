@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\zakat;
 
 use App\Http\Controllers\Controller;
-
+use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +17,8 @@ class InfaqController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
         $infaq = DB::connection('zakat')->table('infaq')
+                      ->join('users', 'infaq.user_id', '=', 'users.id')
+                      ->select('infaq.*', 'users.name')
                       ->where('deleted_at', null)
                       ->paginate(10);
   
@@ -27,6 +29,7 @@ class InfaqController extends Controller
 
     public function store(Request $req)
     {
+      
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
         $req->validate([
@@ -35,8 +38,13 @@ class InfaqController extends Controller
         ]);
   
         try {
+          $user = User::create([
+            'name' => $req['nama'],
+            'role' => 2,
+          ]);
+            
           DB::connection('zakat')->table('infaq')->insert([
-            'nama' => $req['nama'],
+            'user_id' => $user->id,
             'jumlah' => $req['jumlah'],
             'created_at' => now(),
             'updated_at' => now(),
@@ -56,10 +64,12 @@ class InfaqController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat')){
         $infaq = DB::connection('zakat')->table('infaq')
+                      ->join('users', 'infaq.user_id', '=', 'users.id')
+                      ->select('infaq.*', 'users.name')
                       ->where([
                                 'deleted_at' => null,
                               ])
-                        ->where('nama', 'like', '%'.$keyword.'%')
+                        ->where('name', 'like', '%'.$keyword.'%')
                         ->paginate(10);
   
         return response($infaq, 200);
@@ -78,11 +88,15 @@ class InfaqController extends Controller
   
         try {
   
-          DB::connection('zakat')->table('infaq')->where('id', $id)->update([
-            'nama' => $req['nama'],
-            'jumlah' => $req['jumlah'],
-            'updated_at' => now(),
-          ]);
+          DB::connection('zakat')
+            ->table('infaq')
+            ->where('infaq.id', $id)
+            ->join('users', 'infaq.user_id', '=', 'users.id')
+            ->update([
+              'users.name' => $req['nama'],
+              'jumlah' => $req['jumlah'],
+              'infaq.updated_at' => now(),
+            ]);
   
           return response('Data Disimpan', 201);
   
@@ -116,7 +130,12 @@ class InfaqController extends Controller
     {
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
-        $deletedInfaq = DB::connection('zakat')->table('infaq')->where('deleted_at', '!=', null)->paginate(10);
+        $deletedInfaq = DB::connection('zakat')
+                          ->table('infaq')
+                          ->where('deleted_at', '!=', null)
+                          ->join('users', 'infaq.user_id', '=', 'users.id')
+                          ->select('infaq.*', 'users.name')
+                          ->paginate(10);
   
         return response($deletedInfaq, 200);
       }
@@ -128,8 +147,10 @@ class InfaqController extends Controller
       $user = Auth::guard('sanctum')->user();
       if ($user->tokenCan('app:zakat') && $user->tokenCan('zakat:admin')){
         $infaq = DB::connection('zakat')->table('infaq')
+                      ->join('users', 'infaq.user_id', '=', 'users.id')
+                      ->select('infaq.*', 'users.name')
                       ->where('deleted_at', '!=', null)
-                      ->where('nama', 'like', '%'.$keyword.'%')
+                      ->where('name', 'like', '%'.$keyword.'%')
                       ->paginate(10);
   
         return response($infaq, 200);
@@ -149,7 +170,7 @@ class InfaqController extends Controller
           return response('success', 200);
   
         } catch (QueryException $ex) {
-          return response('Ups Something wen wrong error:'.$ex, 400);
+          return response('Ups Something went wrong error:'.$ex, 400);
         }
       }
       return response('Forbidden', 403);
@@ -167,9 +188,9 @@ class InfaqController extends Controller
                                 ->whereMonth('updated_at', '=', $i)
                                 ->sum('jumlah');
         $i++;
-    }
+      }
 
-    $totalOrangInfaq = DB::connection('zakat')->table('infaq')
+      $totalOrangInfaq = DB::connection('zakat')->table('infaq')
                       ->where('deleted_at', '=' , null)
                       ->whereYear('updated_at', '=', $currentYear)
                       ->count();

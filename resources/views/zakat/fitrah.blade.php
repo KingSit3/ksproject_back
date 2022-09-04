@@ -51,7 +51,7 @@
         @forelse ($dataZakat as $zakat)
         <tr>
           <td style="width: 5%">{{ $loop->iteration }}</td>
-          <td style="width: 25%">{{ $zakat->nama }}</td>
+          <td style="width: 25%">{{ $zakat->name }}</td>
           <td style="width: 25%">{{ $zakat->no_telp ?? '-' }}</td>
           <td style="width: 10%">{{ $zakat->jenis ?? '-' }}</td>
           <td style="width: 20%">{{ $zakat->jenis == 'uang' ? 'Rp.'.number_format($zakat->jumlah,0, ',' , '.') : number_format($zakat->jumlah, 0).' Liter' }}</td>
